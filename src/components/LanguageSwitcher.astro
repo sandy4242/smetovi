@@ -1,10 +1,17 @@
 ---
 import { languages } from '../i18n/ui';
 import { getLangFromUrl, useTranslatedPath } from '../i18n/utils';
+import 'flag-icons/css/flag-icons.min.css';
 
 const lang = getLangFromUrl(Astro.url);
 const translatePath = useTranslatedPath(lang);
 const currentPath = Astro.url.pathname;
+
+// Map language codes to country codes for flags
+const flagCodes: Record<string, string> = {
+  bs: 'ba', // Bosnia and Herzegovina
+  en: 'gb', // United Kingdom
+};
 ---
 
 <div class="language-switcher">
@@ -18,7 +25,8 @@ const currentPath = Astro.url.pathname;
         class={`lang-link ${isActive ? 'active' : ''}`}
         aria-current={isActive ? 'page' : undefined}
       >
-        {name}
+        <span class={`fi fi-${flagCodes[langCode]} flag-icon`}></span>
+        <span class="lang-name">{name}</span>
       </a>
     );
   })}
@@ -40,6 +48,19 @@ const currentPath = Astro.url.pathname;
     font-weight: 500;
     transition: all 0.2s ease;
     border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+  
+  .flag-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+    margin-right: 0.25rem;
+  }
+  
+  .lang-name {
+    white-space: nowrap;
   }
   
   .lang-link:hover {
@@ -61,6 +82,10 @@ const currentPath = Astro.url.pathname;
     .lang-link {
       padding: 0.375rem 0.5rem;
       font-size: 0.75rem;
+    }
+    
+    .flag-icon {
+      font-size: 1rem;
     }
   }
 </style>

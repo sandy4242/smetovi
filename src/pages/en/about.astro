@@ -1,23 +1,14 @@
 ---
-import Header from "../../components/Header.astro";
-import Footer from "../../components/Footer.astro";
-import BaseHead from "../../components/BaseHead.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
+import PageLayout from "../../layouts/PageLayout.astro";
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { TESTIMONIALS_ENABLED, testimonials } from "../../config/testimonials";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-  </head>
-  <body class="about-page">
-    
-    <Header />
-    <main class="flex flex-col justify-center w-[90%] lg:w-[85%] mx-auto mt-24">
+<PageLayout>
+  <main class="flex flex-col justify-center w-[90%] lg:w-[85%] mx-auto mt-24">
       
       <!-- Hero Section -->
       <section class="about-hero mb-12">
@@ -93,17 +84,18 @@ const t = useTranslations(lang);
           </p>
           <div class="m-2">
             <a href="/en/contact">
-              <div class="diagonal-border p-[2px] bg-darkBlue">
-                <div class="diagonal-square px-4 py-2 w-40">
+              <button>
+                <div class="diagonal-border px-4 py-3 bg-darkBlue text-white">
                   Contact us
                 </div>
-              </div>
+              </button>
             </a>
           </div>
         </section>
       </div>
 
       <!-- Testimonials Section -->
+      {TESTIMONIALS_ENABLED && (
       <section class="testimonials-section mt-16 mb-12">
         <h2 class="md:px-2 max-md:mx-2 font-exo2 uppercase text-3xl sm:text-4xl font-bold mb-4 text-center">
           What our visitors say
@@ -112,149 +104,27 @@ const t = useTranslations(lang);
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           
-          <!-- Testimonial 1 -->
+          {testimonials.map((testimonial) => (
           <div class="testimonial-card bg-white p-6 rounded-lg shadow-lg border-l-4 border-yellow">
             <div class="flex items-center mb-4">
               <div class="testimonial-avatar bg-darkBlue text-white rounded-full w-12 h-12 flex items-center justify-center mr-3">
                 <i class="fa-solid fa-user"></i>
               </div>
               <div>
-                <h4 class="font-bold text-darkBlue">Mark Johnson</h4>
-                <p class="text-sm text-gray-600">London, UK</p>
+                <h4 class="font-bold text-darkBlue">{testimonial.name}</h4>
+                <p class="text-sm text-gray-600">{testimonial.location.en}</p>
               </div>
             </div>
             <div class="flex mb-3">
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <i class={`fa-solid fa-star ${index < testimonial.rating ? 'text-yellow' : 'text-gray-300'}`}></i>
+              ))}
             </div>
             <p class="text-gray-700 italic">
-              "Smetovi is a true gem! Incredible views, clean air and excellent hiking trails. 
-              Will definitely return with my family."
+              "{testimonial.text.en}"
             </p>
           </div>
-
-          <!-- Testimonial 2 -->
-          <div class="testimonial-card bg-white p-6 rounded-lg shadow-lg border-l-4 border-yellow">
-            <div class="flex items-center mb-4">
-              <div class="testimonial-avatar bg-darkBlue text-white rounded-full w-12 h-12 flex items-center justify-center mr-3">
-                <i class="fa-solid fa-user"></i>
-              </div>
-              <div>
-                <h4 class="font-bold text-darkBlue">Sarah Williams</h4>
-                <p class="text-sm text-gray-600">Berlin, Germany</p>
-              </div>
-            </div>
-            <div class="flex mb-3">
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-            </div>
-            <p class="text-gray-700 italic">
-              "They organized a fantastic guided tour. The guide was very knowledgeable and experienced. 
-              I recommend it to everyone who loves nature!"
-            </p>
-          </div>
-
-          <!-- Testimonial 3 -->
-          <div class="testimonial-card bg-white p-6 rounded-lg shadow-lg border-l-4 border-yellow">
-            <div class="flex items-center mb-4">
-              <div class="testimonial-avatar bg-darkBlue text-white rounded-full w-12 h-12 flex items-center justify-center mr-3">
-                <i class="fa-solid fa-user"></i>
-              </div>
-              <div>
-                <h4 class="font-bold text-darkBlue">James Anderson</h4>
-                <p class="text-sm text-gray-600">Vienna, Austria</p>
-              </div>
-            </div>
-            <div class="flex mb-3">
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-gray-300"></i>
-            </div>
-            <p class="text-gray-700 italic">
-              "Excellent place to escape from city noise. I especially like that they organize 
-              mountain cleaning activities. Bravo for the effort!"
-            </p>
-          </div>
-
-          <!-- Testimonial 4 -->
-          <div class="testimonial-card bg-white p-6 rounded-lg shadow-lg border-l-4 border-yellow">
-            <div class="flex items-center mb-4">
-              <div class="testimonial-avatar bg-darkBlue text-white rounded-full w-12 h-12 flex items-center justify-center mr-3">
-                <i class="fa-solid fa-user"></i>
-              </div>
-              <div>
-                <h4 class="font-bold text-darkBlue">Emma Thompson</h4>
-                <p class="text-sm text-gray-600">Manchester, UK</p>
-              </div>
-            </div>
-            <div class="flex mb-3">
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-            </div>
-            <p class="text-gray-700 italic">
-              "We participated with our children in an educational workshop about local fauna. 
-              The kids were thrilled, and we adults learned a lot too!"
-            </p>
-          </div>
-
-          <!-- Testimonial 5 -->
-          <div class="testimonial-card bg-white p-6 rounded-lg shadow-lg border-l-4 border-yellow">
-            <div class="flex items-center mb-4">
-              <div class="testimonial-avatar bg-darkBlue text-white rounded-full w-12 h-12 flex items-center justify-center mr-3">
-                <i class="fa-solid fa-user"></i>
-              </div>
-              <div>
-                <h4 class="font-bold text-darkBlue">David Miller</h4>
-                <p class="text-sm text-gray-600">Amsterdam, Netherlands</p>
-              </div>
-            </div>
-            <div class="flex mb-3">
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-            </div>
-            <p class="text-gray-700 italic">
-              "As a photographer, I can say that Smetovi offers spectacular shots. 
-              Every season has its own charm and beauty."
-            </p>
-          </div>
-
-          <!-- Testimonial 6 -->
-          <div class="testimonial-card bg-white p-6 rounded-lg shadow-lg border-l-4 border-yellow">
-            <div class="flex items-center mb-4">
-              <div class="testimonial-avatar bg-darkBlue text-white rounded-full w-12 h-12 flex items-center justify-center mr-3">
-                <i class="fa-solid fa-user"></i>
-              </div>
-              <div>
-                <h4 class="font-bold text-darkBlue">Lisa Garcia</h4>
-                <p class="text-sm text-gray-600">Barcelona, Spain</p>
-              </div>
-            </div>
-            <div class="flex mb-3">
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-yellow"></i>
-              <i class="fa-solid fa-star text-gray-300"></i>
-            </div>
-            <p class="text-gray-700 italic">
-              "First visit to Smetovi, but definitely not the last! 
-              The mountain lodge is comfortable and the staff is very friendly."
-            </p>
-          </div>
+          ))}
 
         </div>
 
@@ -267,31 +137,30 @@ const t = useTranslations(lang);
             Have you visited Smetovi? Share your experience with others!
           </p>
           <a href="/en/contact">
-            <div class="diagonal-border p-[2px] bg-darkBlue inline-block">
-              <div class="diagonal-square px-6 py-3">
+            <button>
+              <div class="diagonal-border px-6 py-3 bg-darkBlue text-white">
                 Leave a review
               </div>
-            </div>
+            </button>
           </a>
         </div>
       </section>
+      )}
 
-    </main>
-    <Footer />
+  </main>
 
-    <svg width="0" height="0" class="hidden">
-      <defs>
-        <mask id="diagonal-mask" maskUnits="objectBoundingBox">
-          <polygon fill="white" points="
-            0,0         <!-- top-left -->
-            0.9,0       <!-- almost top-right -->
-            1,0.1       <!-- diagonal top-right -->
-            1,1         <!-- bottom-right -->
-            0.1,1       <!-- almost bottom-left -->
-            0,0.9       <!-- diagonal bottom-left -->
-          " />
-        </mask>
-      </defs>
-    </svg>
-  </body>
-</html>
+  <svg width="0" height="0" class="hidden">
+    <defs>
+      <mask id="diagonal-mask" maskUnits="objectBoundingBox">
+        <polygon fill="white" points="
+          0,0         <!-- top-left -->
+          0.9,0       <!-- almost top-right -->
+          1,0.1       <!-- diagonal top-right -->
+          1,1         <!-- bottom-right -->
+          0.1,1       <!-- almost bottom-left -->
+          0,0.9       <!-- diagonal bottom-left -->
+        " />
+      </mask>
+    </defs>
+  </svg>
+</PageLayout>
