@@ -82,7 +82,9 @@ const aboutUrl = lang === 'bs' ? '/about' : '/en/about';
 
       <!-- Weather Component -->
       <div class="weather flex flex-col justify-center items-center">
-        <Weather client:load/>
+        <HeaderLink href="/weather">
+          <Weather client:load/>
+        </HeaderLink>
       </div>  
 
       <!-- Mobile Menu Button -->
